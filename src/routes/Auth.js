@@ -1,45 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { authService, firebaseInstance } from "fBase";
+import AuthForm from "components/AuthForm";
 
 const Auth = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [newAccount, setNewAccount] = useState(true);
-  const [error, setError] = useState("");
-
-  const onChange = event => {
-    console.log(event);
-    const {
-      target: { name, value }
-    } = event;
-    if (name === "email") {
-      setEmail(value);
-    } else if (name === "password") {
-      setPassword(value);
-    }
-  };
-
-  const onSubmit = async event => {
-    event.preventDefault();
-    try {
-      let data;
-      if (newAccount) {
-        // create account
-        data = await authService.createUserWithEmailAndPassword(
-          email,
-          password
-        );
-      } else {
-        // log in
-        data = await authService.signInWithEmailAndPassword(email, password);
-      }
-      console.log(data);
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
-  const toggleAccount = () => setNewAccount(prev => !prev);
   const onClickSocial = async event => {
     const {
       target: { name }
@@ -56,29 +19,7 @@ const Auth = () => {
 
   return (
     <div>
-      <form onSubmit={onSubmit}>
-        <input
-          name="email"
-          type="email"
-          placeholder="email"
-          required
-          value={email}
-          onChange={onChange}
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          required
-          value={password}
-          onChange={onChange}
-        />
-        <input type="submit" value={newAccount ? "create account" : "log in"} />
-        {error}
-      </form>
-      <span onClick={toggleAccount}>
-        {newAccount ? "log in" : "create account"}
-      </span>
+      <AuthForm />
       <button onClick={onClickSocial} name="google">
         Continue with Google
       </button>
